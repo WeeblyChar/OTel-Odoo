@@ -32,6 +32,19 @@ It provides:
 
 ---
 
+## Requirements
+
+- The Python dependencies required by this module are listed in the included `requirements.txt`.  
+- Make sure to install these dependencies in your Odoo environment before running the server:  
+
+```bash
+pip install -r requirements.txt
+```
+
+This will ensure proper functioning of telemetry export and metrics collection.
+
+---
+
 ## Developer Notes & Configuration
 
 Before using or extending this module:
