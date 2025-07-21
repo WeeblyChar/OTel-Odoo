@@ -1,4 +1,30 @@
 services:
+  db:
+    image: postgres:15
+    container_name: db
+    environment:
+      POSTGRES_DB: odoo
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+    volumes:
+      - odoo-db-data:/var/lib/postgresql/data
+    networks:
+      - odoo-network
+
+  odoo:
+    build: .
+    container_name: odoo
+    depends_on:
+      - db
+      - otel-collector
+    ports:
+      - "8069:8069"
+    volumes:
+      - ./odoo.conf:/etc/odoo/odoo.conf
+      - ../OpenTelemetry_Collector:/mnt/OpenTelemetry_Collector
+    networks:
+      - odoo-network
+
   otel-collector:
     image: otel/opentelemetry-collector-contrib:latest
     container_name: otel-collector
@@ -14,6 +40,9 @@ services:
     environment:
       - OTEL_SERVICE_NAME=odoo # Change as needed
       - OTEL_RESOURCE_ATTRIBUTES=service.name=odoo,service.version=1.0.0
+    networks:
+      - odoo-network
+
   prometheus:
     image: prom/prometheus:v2.53.4
     container_name: prometheus
@@ -21,6 +50,8 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml # Change as needed
     ports:
       - "0.0.0.0:${PROMETHEUS_PORT:-9090}:9090"
+    networks:
+      - odoo-network
 
   grafana:
     image: grafana/grafana:11.5.2
@@ -33,6 +64,8 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD="${GRAFANA_ADMIN_PASSWORD:-admin}"
     depends_on:
       - prometheus
+    networks:
+      - odoo-network
 
   loki:
     image: grafana/loki:3.3.0
@@ -42,3 +75,12 @@ services:
     command: -config.file=/etc/loki-config.yml # Change as needed
     ports:
       - "0.0.0.0:${LOKI_PORT:-3100}:3100"
+    networks:
+      - odoo-network
+
+networks:
+  odoo-network:
+    driver: bridge
+
+volumes:
+  odoo-db-data:

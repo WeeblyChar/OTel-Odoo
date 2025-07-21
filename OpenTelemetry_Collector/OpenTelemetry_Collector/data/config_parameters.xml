@@ -1,0 +1,16 @@
+<odoo>
+    <data noupdate="1">
+        <record id="otel_otel_endpoint_listener" model="ir.config_parameter">
+            <field name="key">otel.otel_endpoint_listener</field>
+            <field name="value">http://otel-collector</field>
+        </record>
+        <record id="otel_otel_collector_grpc_listener" model="ir.config_parameter">
+            <field name="key">otel.otel_collector_grpc_port</field>
+            <field name="value">4317</field>
+        </record>
+        <record id="otel_otel_collector_http_listener" model="ir.config_parameter">
+            <field name="key">otel.otel_collector_http_port</field>
+            <field name="value">4318</field>
+        </record>
+    </data>
+</odoo>
