@@ -55,4 +55,4 @@ If you're deploying your observability stack via Docker, see the provided `docke
 - Includes `docker-compose.yml`, OpenTelemetry Collector config, Prometheus, Loki, Grafana setup.
 - To start:
 ```bash
-docker compose up -d
+docker-compose up -d
