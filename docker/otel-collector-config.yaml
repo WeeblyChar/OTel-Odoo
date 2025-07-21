@@ -11,7 +11,7 @@ receivers:
         - job_name: 'odoo'
           scrape_interval: 5s # <-- Delay between scrape jobs
           static_configs:
-            - targets: ['odoo:8069']  # <-- Odoo port to listen
+            - targets: ['odoo:8069']  # Change as needed
           metrics_path: '/metrics'    # <-- Path for prometheus to scrap from
 
 processors:
@@ -20,10 +20,6 @@ processors:
 exporters:
   debug:
     verbosity: detailed
-  # otlp:
-  #   endpoint: "http://tempo:4317"
-  #   tls:
-  #     insecure: true
   loki:
     endpoint: "http://loki:3100/loki/api/v1/push"
   prometheus:
@@ -31,13 +27,9 @@ exporters:
 
 service:
   pipelines:
-    # traces:
-    #   receivers: [otlp]
-    #   processors: [batch]
-    #   exporters: [otlp]
     logs:
       receivers: [otlp]
       exporters: [loki]
     metrics:
-      receivers: [prometheus]
+      receivers: [otlp, prometheus]
       exporters: [prometheus]

@@ -140,8 +140,6 @@ class Metric(models.Model):
         else:
             return self._get_model_count()
         
-    ### ADDITIONAL METRICS FOR SYSTEM & ODOO MONITORING ###
-
     @staticmethod
     def get_system_metrics():
         """ Collect system-level metrics using psutil """

@@ -3,10 +3,10 @@
         <field name="name">system.parameter.list</field>
         <field name="model">ir.system.parameter</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
                 <field name="value_display" widget="html"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -19,9 +19,9 @@
                     <group>
                         <field name="name"/>
                         <field name="value_ids">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="value"/>
-                            </tree>
+                            </list>
                         </field>
                         <group>
                             <field name="value_display" widget="html"/>

@@ -1,0 +1,3 @@
+prometheus-client
+opentelemetry-instrumentation-logging
+opentelemetry-exporter-otlp
