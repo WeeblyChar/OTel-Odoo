@@ -1,6 +1,6 @@
 # OpenTelemetry Collector Module for Odoo
 
-## 📦 What This Module Does
+## What This Module Does
 
 This module enables **metrics and logging export** from Odoo to OpenTelemetry-compatible observability stacks (such as **Prometheus**, **Loki**, and **Grafana**).
 
@@ -10,11 +10,11 @@ It provides:
 - Structured **logs** forwarded via OpenTelemetry
 - Built-in integration points for custom instrumentation
 
-Useful for developers, devops, and observability engineers looking to monitor, debug, or analyze Odoo instances.
+> Useful for developers, devops, and observability engineers looking to monitor, debug, or analyze Odoo instances.
 
 ---
 
-## ✅ How to Install the Module
+## How to Install the Module
 
 1. Copy or clone the module folder `OpenTelemetry_Collector` into your Odoo **addons path**, e.g.:
 
@@ -28,11 +28,11 @@ Useful for developers, devops, and observability engineers looking to monitor, d
 - Search for `OpenTelemetry Collector`
 - Click **Install**
 
-> 💡 That’s it! No CLI install or extra setup needed inside Odoo.
+> No CLI install or extra setup needed inside Odoo.
 
 ---
 
-## ⚙️ Developer Notes & Configuration
+## Developer Notes & Configuration
 
 Before using or extending this module:
 
@@ -44,11 +44,11 @@ Before using or extending this module:
 
 - `OTEL_COLLECTOR_ENDPOINT`, `OTEL_COLLECTOR_GRPC_PORT`, `OTEL_COLLECTOR_HTTP_PORT` — must align with your actual OpenTelemetry Collector.
 - Logging and metrics will silently fail if the collector is unreachable or misconfigured.
-- You **can extend** this module to add tracing, custom metrics, or hook into specific business logic.
+- You **can extend** this module to add tracing, custom metrics, or hook into specific business logic as there are codes left commented in the files regarding traces that you can improve.
 
 ---
 
-## 🐳 Docker Support (Optional)
+## Docker Support (Optional)
 
 If you're deploying your observability stack via Docker, see the provided `docker/` folder:
 
