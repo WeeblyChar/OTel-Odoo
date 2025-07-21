@@ -53,6 +53,8 @@ Before using or extending this module:
 - **You should copy and rename it to `.env`**, and adjust the values to match your setup (especially OTEL collector addresses).
 - **Avoid hardcoding** values inside the Python code – this module respects `.env` and `os.getenv()` settings.
 
+---
+
 ### ⚠️ Developers Should Pay Attention To:
 
 - `OTEL_COLLECTOR_ENDPOINT`, `OTEL_COLLECTOR_GRPC_PORT`, `OTEL_COLLECTOR_HTTP_PORT` — must align with your actual OpenTelemetry Collector.
@@ -61,7 +63,7 @@ Before using or extending this module:
 
 ---
 
-## Docker Support (Optional)
+## Docker Support
 
 If you're deploying your observability stack via Docker, see the provided `docker/` folder:
 
@@ -69,3 +71,8 @@ If you're deploying your observability stack via Docker, see the provided `docke
 - To start:
 ```bash
 docker-compose up -d
+```
+
+---
+
+If you find bugs, errors or general things to be fixed in this module, please contact the Module Author.
