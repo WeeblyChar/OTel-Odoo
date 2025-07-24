@@ -1,5 +1,5 @@
 {
-    'name': 'Open Telemetry Monitoring Module (Prototype Phase)',
+    'name': 'Open Telemetry Monitoring Module',
     'version': '1.0',
     'summary': 'Integrates Custom Open Telemetry Configuration for Odoo.',
     'description': """
