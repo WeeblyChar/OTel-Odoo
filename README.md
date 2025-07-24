@@ -25,7 +25,7 @@ It provides:
 4. In the Odoo UI:
 - Go to **Apps**
 - Click **Update Apps List**
-- Search for `Open Telemetry `
+- Search for `Open Telemetry Monitoring Module`
 - Click **Activate**
 
 > No CLI install or extra setup needed inside Odoo.
