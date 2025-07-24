@@ -16,7 +16,7 @@ It provides:
 
 ## How to Install the Module
 
-1. Copy or clone the module folder `OpenTelemetry_Collector` into your Odoo **addons path**, e.g.:
+1. Copy or clone the module folder `OpenTelemetry_Collecto` into your Odoo **addons path**, e.g.:
 
 2. Ensure the `addons_path` in your `odoo.conf` includes the path to `OpenTelemetry_Collector`.
 
@@ -25,7 +25,7 @@ It provides:
 4. In the Odoo UI:
 - Go to **Apps**
 - Click **Update Apps List**
-- Search for `OpenTelemetry Collector`
+- Search for `Open Telemetry `
 - Click **Activate**
 
 > No CLI install or extra setup needed inside Odoo.
