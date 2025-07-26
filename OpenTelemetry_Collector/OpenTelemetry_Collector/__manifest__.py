@@ -8,11 +8,11 @@
                     You can access metrics by going into Developer Mode and go to Settings -> Technical -> Metrics. It should be listed under Resources.
                     Meaning you can add more metrics in case you need more informations regarding the system.
                    """,
-    'author': 'None',
+    'author': 'Amsal Anugrah',
     'depends': ['base', 'resource', 'bus'],
     'installable': True,
     'application': False,
-    'category': 'OpenTelemetry Collector/',
+    'category': 'OpenTelemetry Collector/OpenTelemetry Collector',
     'data': [
         'views/ir_metric.xml',
         'security/ir.model.access.csv',
