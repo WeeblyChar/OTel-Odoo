@@ -35,10 +35,21 @@ from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
 from opentelemetry.instrumentation.logging import LoggingInstrumentor
 from odoo.http import request
 
-OTEL_PARAMS = request.env['ir.config_parameter'].sudo()
-OTEL_ENDPOINT_LISTENER = OTEL_PARAMS.get_param('otel.endpoint_listener', default='http://otel-collector')
-OTEL_COLLECTOR_GRPC_PORT = OTEL_PARAMS.get_param('otel.collector_grpc_port', default='4317')
-OTEL_COLLECTOR_HTTP_PORT = OTEL_PARAMS.get_param('otel.collector_http_port', default='4318')
+def get_otel_config():
+    try:
+        config = request.env['ir.config_parameter'].sudo()
+        return {
+            'endpoint_listener': config.get_param('otel.endpoint_listener', default='http://otel-collector'),
+            'grpc_port': config.get_param('otel.collector_grpc_port', default='4317'),
+            'http_port': config.get_param('otel.collector_http_port', default='4318'),
+        }
+    except Exception as e:
+        # Fallback if request.env not ready (e.g. during startup or tests)
+        return {
+            'endpoint_listener': 'http://otel-collector',
+            'grpc_port': '4317',
+            'http_port': '4318',
+        }
 
 # Logging Setup
 logging.basicConfig(level=logging.INFO)
@@ -74,7 +85,8 @@ logger_provider = LoggerProvider(
 set_logger_provider(logger_provider)
 
 # Set Exporter
-log_exporter = OTLPLogExporter(endpoint=f'{OTEL_ENDPOINT_LISTENER}:{OTEL_COLLECTOR_GRPC_PORT}', insecure=True)
+otel_cfg = get_otel_config()
+log_exporter = OTLPLogExporter(endpoint=f"{otel_cfg['endpoint_listener']}:{otel_cfg['grpc_port']}", insecure=True)
 
 # Batch Log Record Processor
 logger_provider.add_log_record_processor(BatchLogRecordProcessor(log_exporter))
@@ -155,7 +167,8 @@ class PrometheusController(http.Controller):
 metrics.set_meter_provider(MeterProvider(
     metric_readers=[
         PeriodicExportingMetricReader(
-            OTLPMetricExporter(endpoint=f"{OTEL_ENDPOINT_LISTENER}:{OTEL_COLLECTOR_HTTP_PORT}")
+            otel_cfg = get_otel_config()
+            OTLPMetricExporter(endpoint=f"{otel_cfg['endpoint_listener']}:{otel_cfg['http_port']}")
         )
     ]
 ))
