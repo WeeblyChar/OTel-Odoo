@@ -35,17 +35,33 @@ from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
 from opentelemetry.instrumentation.logging import LoggingInstrumentor
 from odoo.http import request
 
-OTEL_PARAMS = request.env['ir.config_parameter'].sudo()
-OTEL_ENDPOINT_LISTENER = OTEL_PARAMS.get_param('otel.endpoint_listener', default='http://otel-collector')
-OTEL_COLLECTOR_GRPC_PORT = OTEL_PARAMS.get_param('otel.collector_grpc_port', default='4317')
-OTEL_COLLECTOR_HTTP_PORT = OTEL_PARAMS.get_param('otel.collector_http_port', default='4318')
+# OTEL_PARAMS = request.env['ir.config_parameter'].sudo()
+# OTEL_ENDPOINT_LISTENER = OTEL_PARAMS.get_param('otel.endpoint_listener', default='http://otel-collector')
+# OTEL_COLLECTOR_GRPC_PORT = OTEL_PARAMS.get_param('otel.collector_grpc_port', default='4317')
+# OTEL_COLLECTOR_HTTP_PORT = OTEL_PARAMS.get_param('otel.collector_http_port', default='4318')
+def get_otel_config():
+    try:
+        config = request.env['ir.config_parameter'].sudo()
+        return {
+            'endpoint_listener': config.get_param('otel.endpoint_listener', default='http://otel-collector'),
+            'grpc_port': config.get_param('otel.collector_grpc_port', default='4317'),
+            'http_port': config.get_param('otel.collector_http_port', default='4318'),
+        }
+    except Exception as e:
+        # Fallback if request.env not ready (e.g. during startup or tests)
+        return {
+            'endpoint_listener': 'http://otel-collector',
+            'grpc_port': '4317',
+            'http_port': '4318',
+        }
+otel_cfg = get_otel_config()
 
 # Logging Setup
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 logger.info("Initializing OpenTelemetry...")
-
+logger.info("OTEL config loaded: %s", otel_cfg)
 # Set OpenTelemetry Tracer Provider
 # trace.set_tracer_provider(TracerProvider())
 # tracer = trace.get_tracer(__name__)
@@ -74,7 +90,8 @@ logger_provider = LoggerProvider(
 set_logger_provider(logger_provider)
 
 # Set Exporter
-log_exporter = OTLPLogExporter(endpoint=f'{OTEL_ENDPOINT_LISTENER}:{OTEL_COLLECTOR_GRPC_PORT}', insecure=True)
+# log_exporter = OTLPLogExporter(endpoint=f'{OTEL_ENDPOINT_LISTENER}:{OTEL_COLLECTOR_GRPC_PORT}', insecure=True)
+log_exporter = OTLPLogExporter(endpoint=f"{otel_cfg['endpoint_listener']}:{otel_cfg['grpc_port']}", insecure=True)
 
 # Batch Log Record Processor
 logger_provider.add_log_record_processor(BatchLogRecordProcessor(log_exporter))
@@ -95,6 +112,11 @@ from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 
+class TestOtelController(http.Controller):
+    @http.route('/test/otel_config', auth='public', type='json')
+    def test_otel_config(self):
+        config = get_otel_config()
+        return config
 class PrometheusController(http.Controller):
     @http.route(["/metrics"], auth="public", type="http", methods=["GET"])
     def metrics(self):
@@ -155,7 +177,8 @@ class PrometheusController(http.Controller):
 metrics.set_meter_provider(MeterProvider(
     metric_readers=[
         PeriodicExportingMetricReader(
-            OTLPMetricExporter(endpoint=f"{OTEL_ENDPOINT_LISTENER}:{OTEL_COLLECTOR_HTTP_PORT}")
+            # OTLPMetricExporter(endpoint=f"{OTEL_ENDPOINT_LISTENER}:{OTEL_COLLECTOR_HTTP_PORT}")
+            OTLPMetricExporter(endpoint=f"{otel_cfg['endpoint_listener']}:{otel_cfg['http_port']}")
         )
     ]
 ))
