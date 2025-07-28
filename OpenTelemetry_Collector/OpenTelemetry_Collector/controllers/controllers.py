@@ -102,6 +102,11 @@ logging.getLogger().setLevel(logging.INFO) # <-- logging.INFO = logs anything fr
 logging.getLogger().addHandler(log_handler)
 
 logging.getLogger(__name__)
+class TestOtelController(http.Controller):
+    @http.route('/test/otel_config', auth='public', type='json')
+    def test_otel_config(self):
+        config = get_otel_config()
+        return config
 #############################################
 #===========================================#
 ########## Prometheus Exporter ##############

@@ -1,5 +1,5 @@
 {
-    'name': 'Open Telemetry Monitoring Module (Prototype Phase)',
+    'name': 'Open Telemetry Monitoring Module',
     'version': '1.0',
     'summary': 'Integrates Custom Open Telemetry Configuration for Odoo.',
     'description': """
@@ -8,6 +8,7 @@
                     You can access metrics by going into Developer Mode and go to Settings -> Technical -> Metrics. It should be listed under Resources.
                     Meaning you can add more metrics in case you need more informations regarding the system.
                    """,
+    'author': 'Amsal Anugrah',
     'author': 'Amsal Anugrah',
     'depends': ['base', 'resource', 'bus'],
     'installable': True,
