@@ -9,7 +9,6 @@
                     Meaning you can add more metrics in case you need more informations regarding the system.
                    """,
     'author': 'Amsal Anugrah',
-    'author': 'Amsal Anugrah',
     'depends': ['base', 'resource', 'bus'],
     'installable': True,
     'application': False,
